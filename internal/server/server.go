@@ -14,12 +14,12 @@ type Server struct {
 	db   *gorm.DB
 }
 
-func NewServer(db *gorm.DB) *http.Server {
+func NewServer(port int, db *gorm.DB) *http.Server {
 	e := echo.New()
 
 	s := &Server{
 		echo: e,
-		port: 8080,
+		port: port,
 		db:   db,
 	}
 
