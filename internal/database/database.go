@@ -2,8 +2,8 @@ package database
 
 import (
 	"fmt"
-	"go-api/configs"
-	"go-api/internal/migrations"
+	"go-links/configs"
+	"go-links/internal/migrations"
 	"log"
 
 	"gorm.io/driver/mysql"

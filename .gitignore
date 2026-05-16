@@ -29,4 +29,5 @@ bin/
 
 # Configs & Secrets
 configs/secret.json
+.secret_struct.go
 .env

@@ -1,10 +1,30 @@
 package entities
 
-import "gorm.io/gorm"
+import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
+
+
 
 type User struct {
-	gorm.Model
-	Username string `gorm:"unique;not null"`
-	Email    string `gorm:"unique;not null"`
-	FullName string
+
+	ID       uuid.UUID `gorm:"type:char(36);primaryKey"`
+	Username string    `gorm:"type:varchar(255);unique;not null"`
+	Password string    `gorm:"type:varchar(255);not null"`
+	Title    string    `gorm:"type:text"`
+	Email    string    `gorm:"type:varchar(255);unique;not null"`
+	
+	Links 	[]Link 		`gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+
+	BaseModel
 }
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return
+}
+
+

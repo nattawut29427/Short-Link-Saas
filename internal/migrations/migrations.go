@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"go-api/internal/entities"
+	"go-links/internal/entities"
 	"log"
 
 	"gorm.io/gorm"
@@ -12,7 +12,8 @@ func RunMigrations(db *gorm.DB) {
 
 	err := db.AutoMigrate(
 		&entities.User{},
-		&entities.AddressTh{},
+		&entities.Link{},
+		&entities.Click{},
 	)
 
 	if err != nil {
@@ -20,7 +21,4 @@ func RunMigrations(db *gorm.DB) {
 	}
 
 	log.Println("Migrations completed successfully.")
-
-	// เรียกใช้งาน Seeder
-	SeedGeographyData(db)
 }

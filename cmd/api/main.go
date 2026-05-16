@@ -1,17 +1,12 @@
 package main
 
 import (
-	"go-api/configs"
-	"go-api/internal/database"
-	"go-api/internal/server"
+	"go-links/configs"
+	"go-links/internal/database"
+	"go-links/internal/server"
 	"log"
 )
 
-// @title Go API
-// @version 1.0
-// @description Boilerplate Go API
-// @host localhost:8080
-// @basePath /v1
 func main() {
 	secret := configs.GetSecret()
 	db := database.NewDatabase(secret)

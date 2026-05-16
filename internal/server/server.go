@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"go-api/internal/api/Address/routes"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -51,5 +50,5 @@ func (s *Server) RegisterRoutes() {
 	})
 
 	// Address Routes
-	routes.RegisterAddressRoutes(v1, s.db)
+	// routes.RegisterAddressRoutes(v1, s.db)
 }
