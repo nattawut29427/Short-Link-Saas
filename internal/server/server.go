@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"go-links/internal/api/Url/routes"
+
+	"github.com/labstack/echo/v5"
 	"gorm.io/gorm"
 )
 
@@ -36,7 +38,7 @@ func (s *Server) RegisterRoutes() {
 	v1 := s.echo.Group("/v1")
 
 	// Health Check
-	v1.GET("/health", func(c echo.Context) error {
+	v1.GET("/health", func(c *echo.Context) error {
 		sqlDB, err := s.db.DB()
 		dbStatus := "ok"
 		if err != nil || sqlDB.Ping() != nil {
@@ -49,6 +51,6 @@ func (s *Server) RegisterRoutes() {
 		})
 	})
 
-	// Address Routes
-	// routes.RegisterAddressRoutes(v1, s.db)
+	// Link Routes
+	routes.RegisterLinkRoutes(s.echo, v1, s.db)
 }
