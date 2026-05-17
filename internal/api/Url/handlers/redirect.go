@@ -13,5 +13,5 @@ func (h *LinkHandler) Redirect(c *echo.Context) error {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "link not found"})
 	}
 
-	return c.Redirect(http.StatusMovedPermanently, originalURL)
+	return c.Redirect(http.StatusFound, originalURL)
 }

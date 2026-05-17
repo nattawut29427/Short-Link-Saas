@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"crypto/rand"
 	"fmt"
 
 	"go-links/internal/api/Url/models"
@@ -30,3 +31,17 @@ func (s *service) CreateLink(ctx context.Context, req *models.UrlRequest, baseUR
 		Url: fullURL,
 	}, nil
 }
+
+const base62Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+func generateShortCode(n int) string {
+	bytes := make([]byte, n)
+	if _, err := rand.Read(bytes); err != nil {
+		return ""
+	}
+	for code := 0; code < n; code++ {
+		bytes[code] = base62Alphabet[bytes[code]%62]
+	}
+	return string(bytes)
+}
+
