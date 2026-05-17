@@ -17,3 +17,11 @@ build:
 test:
 	@echo "Testing..."
 	@go test ./... -v
+
+docker-up:
+	@echo "Starting Docker services..."
+	@docker compose up -d
+
+docker-down:
+	@echo "Stopping Docker services..."
+	@docker compose down

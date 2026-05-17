@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/hex"
 	"go-links/internal/api/Url/models"
 	"go-links/internal/api/Url/repositories"
 )
@@ -29,13 +27,4 @@ func (s *service) GetOriginalURL(ctx context.Context, shortCode string) (string,
 		return "", err
 	}
 	return link.OriginalURL, nil
-}
-
-func generateShortCode(n int) string {
-	bytes := make([]byte, n/2)
-	
-	if _, err := rand.Read(bytes); err != nil {
-		return ""
-	}
-	return hex.EncodeToString(bytes)
 }

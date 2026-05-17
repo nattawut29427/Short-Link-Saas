@@ -7,6 +7,7 @@ import (
 	"go-links/internal/api/Url/routes"
 
 	"github.com/labstack/echo/v5"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -14,15 +15,17 @@ type Server struct {
 	echo *echo.Echo
 	port int
 	db   *gorm.DB
+	rdb  *redis.Client
 }
 
-func NewServer(db *gorm.DB) *http.Server {
+func NewServer(port int, db *gorm.DB, rdb *redis.Client) *http.Server {
 	e := echo.New()
 
 	s := &Server{
 		echo: e,
-		port: 8080,
+		port: port,
 		db:   db,
+		rdb:  rdb,
 	}
 
 	s.RegisterRoutes()
@@ -52,5 +55,5 @@ func (s *Server) RegisterRoutes() {
 	})
 
 	// Link Routes
-	routes.RegisterLinkRoutes(s.echo, v1, s.db)
+	routes.RegisterLinkRoutes(s.echo, v1, s.db, s.rdb)
 }
