@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"go-links/internal/api/Url/routes"
+
+	"github.com/labstack/echo/v5"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -12,15 +15,17 @@ type Server struct {
 	echo *echo.Echo
 	port int
 	db   *gorm.DB
+	rdb  *redis.Client
 }
 
-func NewServer(port int, db *gorm.DB) *http.Server {
+func NewServer(port int, db *gorm.DB, rdb *redis.Client) *http.Server {
 	e := echo.New()
 
 	s := &Server{
 		echo: e,
 		port: port,
 		db:   db,
+		rdb:  rdb,
 	}
 
 	s.RegisterRoutes()
@@ -36,7 +41,7 @@ func (s *Server) RegisterRoutes() {
 	v1 := s.echo.Group("/v1")
 
 	// Health Check
-	v1.GET("/health", func(c echo.Context) error {
+	v1.GET("/health", func(c *echo.Context) error {
 		sqlDB, err := s.db.DB()
 		dbStatus := "ok"
 		if err != nil || sqlDB.Ping() != nil {
@@ -49,6 +54,6 @@ func (s *Server) RegisterRoutes() {
 		})
 	})
 
-	// Address Routes
-	// routes.RegisterAddressRoutes(v1, s.db)
+	// Link Routes
+	routes.RegisterLinkRoutes(s.echo, v1, s.db, s.rdb)
 }
