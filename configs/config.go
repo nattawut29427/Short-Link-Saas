@@ -18,6 +18,9 @@ func LoadConfig() *Config {
 	viper.AddConfigPath("./configs")
 	viper.AutomaticEnv()
 
+	// Bind GCP Cloud Run dynamic PORT env var to app.port
+	viper.BindEnv("app.port", "PORT")
+
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Error reading config file: %s", err)
 	}
