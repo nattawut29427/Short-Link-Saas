@@ -2,7 +2,7 @@ package configs
 
 type Secrets struct {
 	MySQL MySQL `mapstructure:",squash"`
-	// Redis Redis `mapstructure:",squash"`
+	Redis Redis `mapstructure:",squash"`
 }
 
 type MySQL struct {
@@ -13,8 +13,9 @@ type MySQL struct {
 	Database string `mapstructure:"mysql_db"`
 }
 
-// type Redis struct {
-// 	Host     string `mapstructure:"redis_host"`
-// 	Port     int    `mapstructure:"redis_port"`
-// 	Password string `mapstructure:"redis_password"`
-// }
+type Redis struct {
+	Host     string `mapstructure:"redis_host"`
+	Port     int    `mapstructure:"redis_port"`
+	Password string `mapstructure:"redis_password"`
+	Database int    `mapstructure:"redis_db"`
+}

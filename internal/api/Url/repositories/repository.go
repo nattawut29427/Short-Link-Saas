@@ -2,7 +2,12 @@ package repositories
 
 import (
 	"context"
+	"encoding/json"
+	"time"
+
 	"go-links/internal/entities"
+
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -12,12 +17,14 @@ type LinkRepository interface {
 }
 
 type repository struct {
-	db *gorm.DB
+	db  *gorm.DB
+	rdb *redis.Client
 }
 
-func NewLinkRepository(db *gorm.DB) LinkRepository {
+func NewLinkRepository(db *gorm.DB, rdb *redis.Client) LinkRepository {
 	return &repository{
-		db: db,
+		db:  db,
+		rdb: rdb,
 	}
 }
 
@@ -26,7 +33,25 @@ func (r *repository) CreateLink(ctx context.Context, link *entities.Link) error 
 }
 
 func (r *repository) FindLinkByShortCode(ctx context.Context, shortCode string) (*entities.Link, error) {
+	cacheKey := "link:" + shortCode
+
+	val, err := r.rdb.Get(ctx, cacheKey).Result()
+	if err == nil {
+		var link entities.Link
+		if err := json.Unmarshal([]byte(val), &link); err == nil {
+			return &link, nil
+		}
+	}
+
 	var link entities.Link
-	err := r.db.WithContext(ctx).Where("short_code = ? AND is_active = ?", shortCode, true).First(&link).Error
-	return &link, err
+	err = r.db.WithContext(ctx).Where("short_code = ? AND is_active = ?", shortCode, true).First(&link).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if data, err := json.Marshal(link); err == nil {
+		r.rdb.Set(ctx, cacheKey, data, 24*time.Hour)
+	}
+
+	return &link, nil
 }
