@@ -1,6 +1,23 @@
 
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: golinks_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database_name
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+
   redis:
     image: redis:7-alpine
     container_name: golinks_redis
@@ -11,4 +28,5 @@ services:
     restart: always
 
 volumes:
+  mysql_data:
   redis_data:

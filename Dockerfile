@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.22-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
@@ -10,8 +10,8 @@ RUN go mod download
 # Copy the source code
 COPY . .
 
-# Build the Go application as a statically linked binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main cmd/api/main.go
+# Build the Go application as a statically linked binary (optimized for speed and low RAM)
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main cmd/api/main.go
 
 # Production stage
 FROM alpine:3.19
