@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"go-links/internal/api/Url/routes"
+	authRoutes "go-links/internal/api/auth/register/routes"
+	urlRoutes "go-links/internal/api/url/routes"
 
 	"github.com/labstack/echo/v5"
 	"github.com/redis/go-redis/v9"
@@ -16,9 +17,10 @@ type Server struct {
 	port int
 	db   *gorm.DB
 	rdb  *redis.Client
+	jwt  string
 }
 
-func NewServer(port int, db *gorm.DB, rdb *redis.Client) *http.Server {
+func NewServer(port int, db *gorm.DB, rdb *redis.Client, jwt string) *http.Server {
 	e := echo.New()
 
 	s := &Server{
@@ -26,6 +28,7 @@ func NewServer(port int, db *gorm.DB, rdb *redis.Client) *http.Server {
 		port: port,
 		db:   db,
 		rdb:  rdb,
+		jwt:  jwt,
 	}
 
 	s.RegisterRoutes()
@@ -54,6 +57,6 @@ func (s *Server) RegisterRoutes() {
 		})
 	})
 
-	// Link Routes
-	routes.RegisterLinkRoutes(s.echo, v1, s.db, s.rdb)
+	urlRoutes.RegisterLinkRoutes(s.echo, v1, s.db, s.rdb)
+	authRoutes.RegisterAuthRoutes(s.echo, v1, s.db, s.rdb, s.jwt)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type Click struct {
-	
+
 	ID        uuid.UUID `gorm:"type:char(36);primaryKey"`
 	LinkID    uuid.UUID `gorm:"type:char(36);index"`
 	Country   string    `gorm:"type:varchar(255)"`

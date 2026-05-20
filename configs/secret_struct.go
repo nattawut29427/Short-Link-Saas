@@ -1,8 +1,9 @@
 package configs
 
 type Secrets struct {
-	MySQL MySQL `mapstructure:",squash"`
-	Redis Redis `mapstructure:",squash"`
+	MySQL     MySQL  `mapstructure:",squash"`
+	Redis     Redis  `mapstructure:",squash"`
+	JWTSecret string `mapstructure:"jwt_secret"`
 }
 
 type MySQL struct {

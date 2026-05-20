@@ -28,6 +28,8 @@ func GetSecret() *Secrets {
 	v.BindEnv("redis_password", "REDIS_PASSWORD")
 	v.BindEnv("redis_db", "REDIS_DB")
 
+	v.BindEnv("jwt_secret", "JWT_SECRET")
+
 	if err := v.ReadInConfig(); err != nil {
 		log.Printf("Warning: Config file 'secret.json' not found (relying on Environment Variables): %s", err)
 	}

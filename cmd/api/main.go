@@ -16,7 +16,7 @@ func main() {
 
 	rdb := database.NewRedisClient(secret)
 
-	srv := server.NewServer(config.App.Port, db, rdb)
+	srv := server.NewServer(config.App.Port, db, rdb, secret.JWTSecret)
 
 	fmt.Printf("server listening on port %d\n", config.App.Port)
 
