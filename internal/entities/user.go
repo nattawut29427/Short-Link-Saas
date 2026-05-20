@@ -6,17 +6,12 @@ import (
 )
 
 type User struct {
-	ID               uuid.UUID `gorm:"type:char(36);primaryKey" json:"id"`
-	Username         string    `gorm:"type:varchar(255);unique;not null" json:"username"`
-	Password         string    `gorm:"type:varchar(255);not null" json:"-"`
-	Title            string    `gorm:"type:text" json:"title"`
-	Email            string    `gorm:"type:varchar(255);unique;not null" json:"email"`
-	TwoFactorEnabled bool      `gorm:"default:false" json:"two_factor_enabled"`
-	EmailVerified    bool      `gorm:"default:false" json:"email_verified"`
+	ID       uuid.UUID `gorm:"type:char(36);primaryKey"`
+	Email    string    `gorm:"type:varchar(255);unique;not null"`
+	Password string    `gorm:"type:varchar(255);not null"`
+	Title    string    `gorm:"type:text"`
 
-	Links []Link `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"links,omitempty"`
-
-	BaseModel
+	Links []Link `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {

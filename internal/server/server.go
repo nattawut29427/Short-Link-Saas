@@ -6,6 +6,7 @@ import (
 
 	authRoutes "go-links/internal/api/auth/register/routes"
 	urlRoutes "go-links/internal/api/url/routes"
+	loginRoutes "go-links/internal/api/auth/login/routes"
 
 	"github.com/labstack/echo/v5"
 	"github.com/redis/go-redis/v9"
@@ -59,4 +60,5 @@ func (s *Server) RegisterRoutes() {
 
 	urlRoutes.RegisterLinkRoutes(s.echo, v1, s.db, s.rdb)
 	authRoutes.RegisterAuthRoutes(s.echo, v1, s.db, s.rdb, s.jwt)
+	loginRoutes.LoginRoutes(s.echo, v1, s.db, s.rdb, s.jwt)
 }
