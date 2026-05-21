@@ -4,6 +4,7 @@ import (
 	"context"
 	"go-links/internal/api/auth/register/models"
 	"go-links/internal/api/auth/register/repositories"
+
 )
 
 type AuthService interface {
@@ -21,3 +22,4 @@ func NewAuthService(repo repositories.AuthRepository, jwtSecret string) AuthServ
 		jwtSecret: jwtSecret,
 	}
 }
+	
