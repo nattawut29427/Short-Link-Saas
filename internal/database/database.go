@@ -6,20 +6,20 @@ import (
 	"go-links/internal/migrations"
 	"log"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func NewDatabase(secret *configs.Secrets) *gorm.DB {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		secret.MySQL.User,
-		secret.MySQL.Password,
-		secret.MySQL.Host,
-		secret.MySQL.Port,
-		secret.MySQL.Database,
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Bangkok",
+		secret.Postgres.Host,
+		secret.Postgres.User,
+		secret.Postgres.Password,
+		secret.Postgres.Database,
+		secret.Postgres.Port,
 	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}

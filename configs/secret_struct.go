@@ -1,17 +1,18 @@
 package configs
 
 type Secrets struct {
-	MySQL     MySQL  `mapstructure:",squash"`
 	Redis     Redis  `mapstructure:",squash"`
 	JWTSecret string `mapstructure:"jwt_secret"`
+	Postgres Postgres `mapstructure:",squash"`
+	Redis    Redis    `mapstructure:",squash"`
 }
 
-type MySQL struct {
-	Host     string `mapstructure:"mysql_host"`
-	Port     int    `mapstructure:"mysql_port"`
-	User     string `mapstructure:"mysql_user"`
-	Password string `mapstructure:"mysql_password"`
-	Database string `mapstructure:"mysql_db"`
+type Postgres struct {
+	Host     string `mapstructure:"postgres_host"`
+	Port     int    `mapstructure:"postgres_port"`
+	User     string `mapstructure:"postgres_user"`
+	Password string `mapstructure:"postgres_password"`
+	Database string `mapstructure:"postgres_db"`
 }
 
 type Redis struct {
