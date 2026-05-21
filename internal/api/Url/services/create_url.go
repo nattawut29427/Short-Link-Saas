@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"fmt"
 
-	"go-links/internal/api/Url/models"
+	"go-links/internal/api/url/models"
 	"go-links/internal/entities"
 )
 

@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"go-links/internal/api/Url/repositories"
-	"go-links/internal/api/Url/services"
+	"go-links/internal/api/url/repositories"
+	"go-links/internal/api/url/services"
 
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"

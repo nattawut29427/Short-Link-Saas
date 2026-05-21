@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"go-links/internal/api/Url/handlers"
+	"go-links/internal/api/url/handlers"
 	"github.com/labstack/echo/v5"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"

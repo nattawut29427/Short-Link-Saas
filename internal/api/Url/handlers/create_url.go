@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"go-links/internal/api/Url/models"
+	"go-links/internal/api/url/models"
 	"github.com/labstack/echo/v5"
 )
 

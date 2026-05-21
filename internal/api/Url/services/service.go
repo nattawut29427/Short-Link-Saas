@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"go-links/internal/api/Url/models"
-	"go-links/internal/api/Url/repositories"
+	"go-links/internal/api/url/models"
+	"go-links/internal/api/url/repositories"
 )
 
 type LinkService interface {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"go-links/internal/api/Url/routes"
+	"go-links/internal/api/url/routes"
 
 	"github.com/labstack/echo/v5"
 	"github.com/redis/go-redis/v9"

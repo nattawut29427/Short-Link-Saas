@@ -17,11 +17,11 @@ func GetSecret() *Secrets {
 	v.AutomaticEnv()
 
 	// Explicitly bind struct fields to environment variables
-	v.BindEnv("mysql_host", "MYSQL_HOST")
-	v.BindEnv("mysql_port", "MYSQL_PORT")
-	v.BindEnv("mysql_user", "MYSQL_USER")
-	v.BindEnv("mysql_password", "MYSQL_PASSWORD")
-	v.BindEnv("mysql_db", "MYSQL_DB")
+	v.BindEnv("postgres_host", "POSTGRES_HOST")
+	v.BindEnv("postgres_port", "POSTGRES_PORT")
+	v.BindEnv("postgres_user", "POSTGRES_USER")
+	v.BindEnv("postgres_password", "POSTGRES_PASSWORD")
+	v.BindEnv("postgres_db", "POSTGRES_DB")
 
 	v.BindEnv("redis_host", "REDIS_HOST")
 	v.BindEnv("redis_port", "REDIS_PORT")

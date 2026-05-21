@@ -1,6 +1,6 @@
 # Go-Links (URL Shortener API)
 
-use mysql db
+use postgres db
 
 setup config secret.json.example
 
