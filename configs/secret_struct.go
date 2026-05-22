@@ -1,6 +1,7 @@
 package configs
 
 type Secrets struct {
+	JWTSecret string `mapstructure:"jwt_secret"`
 	Postgres Postgres `mapstructure:",squash"`
 	Redis    Redis    `mapstructure:",squash"`
 }
