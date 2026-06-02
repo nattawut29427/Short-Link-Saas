@@ -1,18 +1,39 @@
+# Build stage
+FROM golang:1.25-alpine AS builder
+
+WORKDIR /app
+
+# Install git (required for some Go modules)
+RUN apk --no-cache add git
+
+# Copy go.mod and go.sum first for better Docker layer caching
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the binary for Linux
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main cmd/api/main.go
+
 # Production stage
 FROM alpine:3.19
 
 WORKDIR /app
 
-# Install ca-certificates in case the app needs to make outbound HTTPS requests
-RUN apk --no-cache add ca-certificates
+# Install ca-certificates for outbound HTTPS requests
+RUN apk --no-cache add ca-certificates tzdata
 
-# Copy the pre-built binary directly from the host machine
-COPY main .
+# Copy the built binary from builder
+COPY --from=builder /app/main .
 
-# Copy config directory (requires configs/config.yaml)
+# Copy config files
 COPY configs/config.yaml ./configs/config.yaml
 
-# Expose port (default 9000, will be dynamically overridden by $PORT on GCP Cloud Run)
+# Copy public assets
+COPY public/ ./public/
+
+# Expose port (default 9000, overridden by $PORT env var)
 EXPOSE 9000
 
 # Run the application
