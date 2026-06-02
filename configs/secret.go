@@ -29,6 +29,10 @@ func GetSecret() *Secrets {
 	v.BindEnv("redis_db", "REDIS_DB")
 
 	v.BindEnv("jwt_secret", "JWT_SECRET")
+	
+	v.BindEnv("google_client_id", "GOOGLE_CLIENT_ID")
+	v.BindEnv("google_client_secret", "GOOGLE_CLIENT_SECRET")
+	v.BindEnv("google_redirect_url", "GOOGLE_REDIRECT_URL")
 
 	if err := v.ReadInConfig(); err != nil {
 		log.Printf("Warning: Config file 'secret.json' not found (relying on Environment Variables): %s", err)

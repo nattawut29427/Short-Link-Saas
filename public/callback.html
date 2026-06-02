@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        .status {
+            text-align: center;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 1.5rem;
+        }
+        .error {
+            color: #ef4444 !important;
+        }
+        .result-box {
+            background: #020617;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        pre {
+            margin: 0;
+            color: #34d399;
+            font-family: monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .btn {
+            display: block;
+            text-align: center;
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 2rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OAuth Redirecting...</h1>
+        <div id="status" class="status">Exchanging Authorization Code...</div>
+        
+        <div class="result-box">
+            <pre id="output">Loading details...</pre>
+        </div>
+
+        <a href="/" class="btn">Back to Login</a>
+    </div>
+
+    <script>
+        async function handleCallback() {
+            const statusEl = document.getElementById('status');
+            const outputEl = document.getElementById('output');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (!code) {
+                statusEl.textContent = 'Error: Authorization Code not found in URL';
+                statusEl.classList.add('error');
+                outputEl.textContent = 'Please try logging in again.';
+                return;
+            }
+
+            try {
+                statusEl.textContent = 'Exchanging token with backend...';
+                
+                const response = await fetch('/v1/auth/oauth/google/callback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusEl.textContent = 'Login Successful!';
+                    statusEl.style.color = '#10b981';
+                    outputEl.textContent = JSON.stringify(data, null, 2);
+                    // Optionally save token in localstorage
+                    if(data.token) {
+                        localStorage.setItem('token', data.token);
+                    }
+                } else {
+                    statusEl.textContent = 'Authentication Failed';
+                    statusEl.classList.add('error');
+                    outputEl.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (err) {
+                console.error(err);
+                statusEl.textContent = 'Network / Server Error';
+                statusEl.classList.add('error');
+                outputEl.textContent = err.message;
+            }
+        }
+
+        handleCallback();
+    </script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import (
 
 	loginRoutes "go-links/internal/api/auth/login/routes"
 	authRoutes "go-links/internal/api/auth/register/routes"
+	oauthRoutes "go-links/internal/api/auth/oauth/routes"
 	urlRoutes "go-links/internal/api/url/routes"
 	"go-links/internal/middleware"
 
@@ -33,8 +34,10 @@ func NewServer(port int, db *gorm.DB, rdb *redis.Client, jwt string) *http.Serve
 		rdb:  rdb,
 		jwt:  jwt,
 	}
+	
 
 	e.Use(middleware.Recover())
+	e.Use(middleware.ZLogger()) 
 
 	s.MainRoutes()
 
@@ -45,6 +48,10 @@ func NewServer(port int, db *gorm.DB, rdb *redis.Client, jwt string) *http.Serve
 }
 
 func (s *Server) MainRoutes() {
+	// Static Frontend Pages for testing OAuth
+	s.echo.File("/", "public/index.html")
+	s.echo.File("/auth/google/callback", "public/callback.html")
+
 	// Root Group
 	v1 := s.echo.Group("/v1")
 
@@ -65,15 +72,16 @@ func (s *Server) MainRoutes() {
 	v1.GET("/panic", func(c *echo.Context) error {
 	panic("test recover middleware")
 })
-	
+
 	RateLimitGroup := v1.Group("", middleware.RateLimit())
 
 	authRoutes.RegisterAuthRoutes(s.echo, RateLimitGroup, s.db, s.rdb, s.jwt)
 	loginRoutes.LoginRoutes(s.echo, RateLimitGroup, s.db, s.rdb, s.jwt)
+	oauthRoutes.OAuthRoutes(s.echo, RateLimitGroup, s.db, s.rdb, s.jwt)
 
 	protected := v1.Group("", middleware.JWTAuth(s.jwt))
 
 	urlRoutes.RegisterLinkRoutes(s.echo, protected, s.db, s.rdb)
-	
+
 }
 

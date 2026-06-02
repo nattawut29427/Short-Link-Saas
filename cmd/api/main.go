@@ -3,6 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"time"
+
+	"github.com/rs/zerolog"
+	zlog "github.com/rs/zerolog/log"
 
 	"go-links/configs"
 	"go-links/internal/database"
@@ -12,6 +17,9 @@ import (
 func main() {
 	secret := configs.GetSecret()
 	config := configs.LoadConfig()
+
+	zlog.Logger = zlog.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339})
+
 	db := database.NewDatabase(secret)
 
 	rdb := database.NewRedisClient(secret)

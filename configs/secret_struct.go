@@ -1,9 +1,12 @@
 package configs
 
 type Secrets struct {
-	JWTSecret string `mapstructure:"jwt_secret"`
-	Postgres Postgres `mapstructure:",squash"`
-	Redis    Redis    `mapstructure:",squash"`
+	JWTSecret         string `mapstructure:"jwt_secret"`
+	GoogleClientID    string `mapstructure:"google_client_id"`
+	GoogleClientSecret string `mapstructure:"google_client_secret"`
+	GoogleRedirectURL string `mapstructure:"google_redirect_url"`
+	Postgres          Postgres `mapstructure:",squash"`
+	Redis             Redis    `mapstructure:",squash"`
 }
 
 type Postgres struct {
