@@ -7,7 +7,7 @@ import (
 )
 
 
-type MultiLang struct {
+type MultiLang struct { 
 	Th string `json:"th"`
 	En string `json:"en"`
 }

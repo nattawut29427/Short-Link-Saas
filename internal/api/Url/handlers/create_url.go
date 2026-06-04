@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
-func (h *LinkHandler) CreateUrl(c *echo.Context) error {
+func (h *LinkHandler) CreateUrl(c *echo.Context) error  {
 	var req models.UrlRequest
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request payload"})
