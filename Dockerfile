@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the binary for Linux
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main cmd/api/main.go
+# RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main cmd/api/main.go
 
 # Production stage
 FROM alpine:3.19
@@ -38,3 +38,4 @@ EXPOSE 9000
 
 # Run the application
 CMD ["./main"]
+
